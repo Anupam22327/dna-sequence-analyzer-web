@@ -7,20 +7,21 @@ app = Flask(
 )
 
 
-# ==============================
+# ========================================
 # HOME PAGE
-# ==============================
+# ========================================
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# ==============================
+# ========================================
 # DNA VALIDATION
-# ==============================
+# ========================================
 
 def validate_sequence(sequence):
+
     valid_bases = {"A", "T", "G", "C"}
 
     return all(
@@ -29,9 +30,9 @@ def validate_sequence(sequence):
     )
 
 
-# ==============================
+# ========================================
 # DNA ANALYSIS
-# ==============================
+# ========================================
 
 def analyze_sequence(sequence):
 
@@ -86,9 +87,9 @@ def analyze_sequence(sequence):
     }
 
 
-# ==============================
+# ========================================
 # ANALYZE API
-# ==============================
+# ========================================
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -103,7 +104,9 @@ def analyze():
                 "error": "No data received."
             }), 400
 
+
         sequence = data.get("sequence", "")
+
 
         if not isinstance(sequence, str):
             return jsonify({
@@ -111,36 +114,50 @@ def analyze():
                 "error": "DNA sequence must be text."
             }), 400
 
+
         # Remove spaces and line breaks
+
         sequence = sequence.replace(" ", "")
         sequence = sequence.replace("\n", "")
         sequence = sequence.replace("\r", "")
         sequence = sequence.replace("\t", "")
 
+
         # Convert to uppercase
+
         sequence = sequence.upper()
 
+
         # Check empty sequence
+
         if not sequence:
+
             return jsonify({
                 "success": False,
                 "error": "Please enter a DNA sequence."
             }), 400
 
-        # Validate DNA
+
+        # Validate DNA sequence
+
         if not validate_sequence(sequence):
+
             return jsonify({
                 "success": False,
                 "error": "Invalid DNA sequence. Only A, T, G and C are allowed."
             }), 400
 
-        # Analyze DNA
+
+        # Analyze sequence
+
         results = analyze_sequence(sequence)
+
 
         return jsonify({
             "success": True,
             "results": results
         })
+
 
     except Exception as error:
 
@@ -150,11 +167,31 @@ def analyze():
         }), 500
 
 
-# ==============================
+# ========================================
+# HEALTH CHECK
+# ========================================
+
+@app.route("/health", methods=["GET"])
+def health():
+
+    return jsonify({
+        "status": "ok",
+        "message": "DNA Sequence Analyzer API is running."
+    })
+
+
+# ========================================
 # LOCAL DEVELOPMENT
-# ==============================
+# ========================================
 
 if __name__ == "__main__":
+
+    print("\n======================================")
+    print("      DNA SEQUENCE ANALYZER")
+    print("======================================")
+    print("Local Website:")
+    print("http://127.0.0.1:5000")
+    print("======================================\n")
 
     app.run(
         host="127.0.0.1",
