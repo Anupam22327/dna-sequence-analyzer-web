@@ -1,36 +1,19 @@
-from flask import Flask, request, jsonify, send_from_directory
-import os
+from flask import Flask, request, jsonify, render_template
 
-app = Flask(__name__, static_folder="static", template_folder="templates")
-
+app = Flask(
+    __name__,
+    template_folder="../templates",
+    static_folder="../static"
+)
 
 
 # ==============================
-# SERVE WEBSITE FILES
+# HOME PAGE
 # ==============================
 
 @app.route("/")
 def home():
-    return send_from_directory(
-        os.path.dirname(os.path.abspath(__file__)),
-        "templates/index.html"
-    )
-
-
-@app.route("/style.css")
-def css():
-    return send_from_directory(
-        os.path.dirname(os.path.abspath(__file__)),
-        "static/style.css"
-    )
-
-
-@app.route("/script.js")
-def javascript():
-    return send_from_directory(
-        os.path.dirname(os.path.abspath(__file__)),
-        "static/script.js"
-    )
+    return render_template("index.html")
 
 
 # ==============================
@@ -38,7 +21,6 @@ def javascript():
 # ==============================
 
 def validate_sequence(sequence):
-
     valid_bases = {"A", "T", "G", "C"}
 
     return all(
@@ -100,7 +82,6 @@ def analyze_sequence(sequence):
         "C_percentage": round(C_percentage, 2),
 
         "reverse_complement": reverse_complement,
-
         "rna": rna
     }
 
@@ -114,10 +95,9 @@ def analyze():
 
     try:
 
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
         if not data:
-
             return jsonify({
                 "success": False,
                 "error": "No data received."
@@ -125,26 +105,36 @@ def analyze():
 
         sequence = data.get("sequence", "")
 
+        if not isinstance(sequence, str):
+            return jsonify({
+                "success": False,
+                "error": "DNA sequence must be text."
+            }), 400
+
+        # Remove spaces and line breaks
         sequence = sequence.replace(" ", "")
         sequence = sequence.replace("\n", "")
         sequence = sequence.replace("\r", "")
+        sequence = sequence.replace("\t", "")
 
+        # Convert to uppercase
         sequence = sequence.upper()
 
+        # Check empty sequence
         if not sequence:
-
             return jsonify({
                 "success": False,
                 "error": "Please enter a DNA sequence."
             }), 400
 
+        # Validate DNA
         if not validate_sequence(sequence):
-
             return jsonify({
                 "success": False,
                 "error": "Invalid DNA sequence. Only A, T, G and C are allowed."
             }), 400
 
+        # Analyze DNA
         results = analyze_sequence(sequence)
 
         return jsonify({
@@ -161,16 +151,10 @@ def analyze():
 
 
 # ==============================
-# START SERVER
+# LOCAL DEVELOPMENT
 # ==============================
 
 if __name__ == "__main__":
-
-    print("\n===================================")
-    print(" DNA SEQUENCE ANALYZER")
-    print("===================================")
-    print("Website: http://127.0.0.1:5000")
-    print("===================================\n")
 
     app.run(
         host="127.0.0.1",
