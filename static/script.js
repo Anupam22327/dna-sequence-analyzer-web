@@ -2,173 +2,147 @@
 // GET HTML ELEMENTS
 // ========================================
 
-const sequenceInput =
-    document.getElementById("sequence");
-
-const analyzeButton =
-    document.getElementById("analyzeButton");
-
-const buttonText =
-    document.getElementById("buttonText");
-
-const loading =
-    document.getElementById("loading");
-
-const results =
-    document.getElementById("results");
-
-const errorMessage =
-    document.getElementById("errorMessage");
-
-const exampleButton =
-    document.getElementById("exampleButton");
-
+const sequenceInput = document.getElementById("sequence");
+const analyzeButton = document.getElementById("analyzeButton");
+const buttonText = document.getElementById("buttonText");
+const loading = document.getElementById("loading");
+const results = document.getElementById("results");
+const errorMessage = document.getElementById("errorMessage");
+const exampleButton = document.getElementById("exampleButton");
 
 
 // ========================================
 // EXAMPLE DNA
 // ========================================
 
-exampleButton.addEventListener(
-    "click",
-    function () {
+exampleButton.addEventListener("click", function () {
 
-        sequenceInput.value =
-            "ATGCGTACCGATGCTAGC";
+    sequenceInput.value = "ATGCGTACCGATGCTAGC";
 
-    }
-);
+    // Clear previous error
+    errorMessage.textContent = "";
 
+    // Focus on textarea
+    sequenceInput.focus();
+
+});
 
 
 // ========================================
 // ANALYZE DNA
 // ========================================
 
-analyzeButton.addEventListener(
-    "click",
-    async function () {
+analyzeButton.addEventListener("click", async function () {
+
+    const sequence = sequenceInput.value.trim();
+
+    // Clear old error
+    errorMessage.textContent = "";
+
+    // Hide previous results
+    results.classList.add("hidden");
 
 
-        const sequence =
-            sequenceInput.value.trim();
+    // ========================================
+    // CHECK EMPTY INPUT
+    // ========================================
+
+    if (!sequence) {
+
+        errorMessage.textContent =
+            "Please enter a DNA sequence.";
+
+        return;
+    }
 
 
-        // Clear old error
+    // ========================================
+    // LOADING
+    // ========================================
 
-        errorMessage.textContent = "";
+    buttonText.classList.add("hidden");
+    loading.classList.remove("hidden");
 
-
-
-        // Check empty input
-
-        if (!sequence) {
-
-            errorMessage.textContent =
-                "Please enter a DNA sequence.";
-
-            return;
-
-        }
+    analyzeButton.disabled = true;
 
 
+    try {
 
-        // Loading
+        // ========================================
+        // SEND DNA TO FLASK
+        // ========================================
 
-        buttonText.classList.add("hidden");
+        const response = await fetch("/analyze", {
 
-        loading.classList.remove("hidden");
+            method: "POST",
 
-        analyzeButton.disabled = true;
+            headers: {
+                "Content-Type": "application/json"
+            },
 
+            body: JSON.stringify({
+                sequence: sequence
+            })
 
-
-        try {
-
-
-            // Send DNA to Flask
-
-            const response =
-                await fetch("/analyze", {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body: JSON.stringify({
-
-                        sequence: sequence
-
-                    })
-
-                });
+        });
 
 
+        // ========================================
+        // READ RESPONSE
+        // ========================================
 
-            // Convert response to JSON
-
-            const data =
-                await response.json();
-
-
-
-            // Check error
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.error
-                );
-
-            }
+        const data = await response.json();
 
 
+        // ========================================
+        // CHECK SERVER ERROR
+        // ========================================
 
-            // Show results
+        if (!response.ok || !data.success) {
 
-            displayResults(
-                data.results
-            );
-
-
-        }
-
-
-        catch (error) {
-
-
-            errorMessage.textContent =
-                error.message;
-
-            results.classList.add(
-                "hidden"
+            throw new Error(
+                data.error || "Unable to analyze DNA sequence."
             );
 
         }
 
 
+        // ========================================
+        // DISPLAY RESULTS
+        // ========================================
 
-        // Stop loading
-
-        buttonText.classList.remove(
-            "hidden"
-        );
-
-        loading.classList.add(
-            "hidden"
-        );
-
-        analyzeButton.disabled =
-            false;
+        displayResults(data.results);
 
     }
-);
 
+
+    catch (error) {
+
+        console.error("Analysis error:", error);
+
+        errorMessage.textContent =
+            error.message || "Something went wrong.";
+
+        results.classList.add("hidden");
+
+    }
+
+
+    finally {
+
+        // ========================================
+        // STOP LOADING
+        // ========================================
+
+        buttonText.classList.remove("hidden");
+
+        loading.classList.add("hidden");
+
+        analyzeButton.disabled = false;
+
+    }
+
+});
 
 
 // ========================================
@@ -177,221 +151,179 @@ analyzeButton.addEventListener(
 
 function displayResults(data) {
 
-
-    results.classList.remove(
-        "hidden"
-    );
+    results.classList.remove("hidden");
 
 
+    // ========================================
+    // SEQUENCE LENGTH
+    // ========================================
 
-    // Sequence length
-
-    document.getElementById(
-        "length"
-    ).textContent =
+    document.getElementById("length").textContent =
         data.length;
 
 
+    // ========================================
+    // GC CONTENT
+    // ========================================
 
-    // GC content
-
-    document.getElementById(
-        "gcContent"
-    ).textContent =
+    document.getElementById("gcContent").textContent =
         data.gc_content;
 
 
+    // ========================================
+    // AT CONTENT
+    // ========================================
 
-    // AT content
-
-    document.getElementById(
-        "atContent"
-    ).textContent =
+    document.getElementById("atContent").textContent =
         data.at_content;
 
 
+    // ========================================
+    // NUCLEOTIDE COUNTS
+    // ========================================
 
-    // Nucleotide counts
-
-    document.getElementById(
-        "countA"
-    ).textContent =
+    document.getElementById("countA").textContent =
         data.A;
 
-
-    document.getElementById(
-        "countT"
-    ).textContent =
+    document.getElementById("countT").textContent =
         data.T;
 
-
-    document.getElementById(
-        "countG"
-    ).textContent =
+    document.getElementById("countG").textContent =
         data.G;
 
-
-    document.getElementById(
-        "countC"
-    ).textContent =
+    document.getElementById("countC").textContent =
         data.C;
 
 
+    // ========================================
+    // REVERSE COMPLEMENT
+    // ========================================
 
-    // Reverse complement
-
-    document.getElementById(
-        "reverseComplement"
-    ).textContent =
+    document.getElementById("reverseComplement").textContent =
         data.reverse_complement;
 
 
+    // ========================================
+    // RNA SEQUENCE
+    // ========================================
 
-    // RNA
-
-    document.getElementById(
-        "rnaSequence"
-    ).textContent =
+    document.getElementById("rnaSequence").textContent =
         data.rna;
 
 
+    // ========================================
+    // NUCLEOTIDE PERCENTAGES
+    // ========================================
 
-    // Percentages
-
-    document.getElementById(
-        "percentA"
-    ).textContent =
+    document.getElementById("percentA").textContent =
         data.A_percentage;
 
-
-    document.getElementById(
-        "percentT"
-    ).textContent =
+    document.getElementById("percentT").textContent =
         data.T_percentage;
 
-
-    document.getElementById(
-        "percentG"
-    ).textContent =
+    document.getElementById("percentG").textContent =
         data.G_percentage;
 
-
-    document.getElementById(
-        "percentC"
-    ).textContent =
+    document.getElementById("percentC").textContent =
         data.C_percentage;
 
 
+    // ========================================
+    // PROGRESS BARS
+    // ========================================
 
-    // Progress bars
-
-    document.getElementById(
-        "barA"
-    ).style.width =
+    document.getElementById("barA").style.width =
         data.A_percentage + "%";
 
-
-    document.getElementById(
-        "barT"
-    ).style.width =
+    document.getElementById("barT").style.width =
         data.T_percentage + "%";
 
-
-    document.getElementById(
-        "barG"
-    ).style.width =
+    document.getElementById("barG").style.width =
         data.G_percentage + "%";
 
-
-    document.getElementById(
-        "barC"
-    ).style.width =
+    document.getElementById("barC").style.width =
         data.C_percentage + "%";
 
 
+    // ========================================
+    // SCROLL TO RESULTS
+    // ========================================
 
-    // Scroll to results
+    setTimeout(function () {
 
-    results.scrollIntoView({
+        results.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
-        behavior: "smooth"
-
-    });
+    }, 100);
 
 }
-
 
 
 // ========================================
 // COPY BUTTONS
 // ========================================
 
-const copyButtons =
-    document.querySelectorAll(
-        ".copy-button"
-    );
+const copyButtons = document.querySelectorAll(".copy-button");
 
 
-copyButtons.forEach(
-    function (button) {
+copyButtons.forEach(function (button) {
+
+    button.addEventListener("click", async function () {
+
+        const targetId =
+            button.getAttribute("data-target");
+
+        const targetElement =
+            document.getElementById(targetId);
+
+        if (!targetElement) {
+            return;
+        }
 
 
-        button.addEventListener(
-            "click",
-            async function () {
+        const text =
+            targetElement.textContent.trim();
 
 
-                const targetId =
-                    button.getAttribute(
-                        "data-target"
-                    );
+        if (!text) {
+            return;
+        }
 
 
-                const text =
-                    document.getElementById(
-                        targetId
-                    ).textContent;
+        try {
+
+            await navigator.clipboard.writeText(text);
 
 
-                try {
-
-                    await navigator
-                        .clipboard
-                        .writeText(text);
+            const originalText =
+                button.textContent;
 
 
-                    const originalText =
-                        button.textContent;
+            button.textContent =
+                "Copied!";
 
 
-                    button.textContent =
-                        "Copied!";
+            setTimeout(function () {
+
+                button.textContent =
+                    originalText;
+
+            }, 1500);
+
+        }
 
 
-                    setTimeout(
-                        function () {
+        catch (error) {
 
-                            button.textContent =
-                                originalText;
+            console.error(
+                "Copy failed:",
+                error
+            );
 
-                        },
-                        1500
-                    );
+        }
 
+    });
 
-                }
-
-                catch (error) {
-
-                    console.log(
-                        "Copy failed:",
-                        error
-                    );
-
-                }
-
-            }
-        );
-
-    }
-);
+});
