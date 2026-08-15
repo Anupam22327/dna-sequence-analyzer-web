@@ -1,0 +1,798 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f5f8f7;
+
+    color: #17211f;
+
+    line-height: 1.6;
+}
+
+
+/* ================= HEADER ================= */
+
+header {
+
+    height: 72px;
+
+    padding: 0 7%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: white;
+
+    border-bottom:
+        1px solid #e3e8e6;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+}
+
+
+.logo {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+}
+
+
+nav {
+
+    display: flex;
+
+    gap: 30px;
+
+}
+
+
+nav a {
+
+    text-decoration: none;
+
+    color: #34413d;
+
+    font-weight: 500;
+
+}
+
+
+nav a:hover {
+
+    color: #16745b;
+
+}
+
+
+
+/* ================= HERO ================= */
+
+.hero {
+
+    min-height: 550px;
+
+    padding: 80px 7%;
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+
+        radial-gradient(
+            circle at 80% 20%,
+            #d8f1e7,
+            transparent 35%
+        ),
+
+        #f5f8f7;
+
+}
+
+
+.hero-content {
+
+    max-width: 800px;
+
+}
+
+
+.tag {
+
+    color: #16745b;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.hero h1 {
+
+    font-size:
+        clamp(48px, 7vw, 82px);
+
+    line-height: 1;
+
+    letter-spacing: -3px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.hero h1 span {
+
+    color: #16745b;
+
+}
+
+
+.description {
+
+    max-width: 650px;
+
+    font-size: 19px;
+
+    color: #60706b;
+
+    margin-bottom: 35px;
+
+}
+
+
+.start-button {
+
+    display: inline-block;
+
+    padding:
+        14px 25px;
+
+    background: #16745b;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+}
+
+
+.start-button:hover {
+
+    background: #105a46;
+
+}
+
+
+
+/* ================= ANALYZER ================= */
+
+.analyzer-section {
+
+    padding: 100px 7%;
+
+}
+
+
+.section-title {
+
+    max-width: 750px;
+
+    margin-bottom: 40px;
+
+}
+
+
+.section-title h2 {
+
+    font-size: 42px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.section-title > p:last-child {
+
+    color: #697873;
+
+}
+
+
+
+/* ================= INPUT ================= */
+
+.input-card {
+
+    max-width: 1000px;
+
+    margin: auto;
+
+    padding: 35px;
+
+    background: white;
+
+    border:
+        1px solid #e2e8e5;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 40px
+        rgba(20, 50, 40, 0.06);
+
+}
+
+
+.input-card label {
+
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+
+}
+
+
+textarea {
+
+    width: 100%;
+
+    min-height: 180px;
+
+    resize: vertical;
+
+    padding: 18px;
+
+    border:
+        1px solid #d5dedb;
+
+    border-radius: 10px;
+
+    font-family: monospace;
+
+    font-size: 16px;
+
+    outline: none;
+
+}
+
+
+textarea:focus {
+
+    border-color: #16745b;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(22, 116, 91, 0.1);
+
+}
+
+
+.example {
+
+    margin: 15px 0;
+
+    color: #71807c;
+
+    font-size: 14px;
+
+}
+
+
+.example button {
+
+    border: none;
+
+    background: transparent;
+
+    color: #16745b;
+
+    cursor: pointer;
+
+    font-family: monospace;
+
+}
+
+
+.analyze-button {
+
+    width: 100%;
+
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #16745b;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.analyze-button:hover {
+
+    background: #105a46;
+
+}
+
+
+.analyze-button:disabled {
+
+    opacity: 0.7;
+
+    cursor: not-allowed;
+
+}
+
+
+.error {
+
+    margin-top: 15px;
+
+    color: #c0392b;
+
+    font-weight: bold;
+
+}
+
+
+/* ================= RESULTS ================= */
+
+.results {
+
+    max-width: 1000px;
+
+    margin:
+        70px auto 0;
+
+}
+
+
+.results-title {
+
+    margin-bottom: 30px;
+
+}
+
+
+.results-title h2 {
+
+    font-size: 42px;
+
+}
+
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+
+/* ================= STATISTICS ================= */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+
+}
+
+
+.stat-card {
+
+    padding: 25px;
+
+    background: white;
+
+    border:
+        1px solid #e2e8e5;
+
+    border-radius: 14px;
+
+}
+
+
+.icon {
+
+    font-size: 28px;
+
+}
+
+
+.stat-card p {
+
+    margin-top: 15px;
+
+    color: #697873;
+
+}
+
+
+.stat-card h3 {
+
+    font-size: 35px;
+
+    margin-top: 5px;
+
+}
+
+
+.stat-card small {
+
+    font-size: 16px;
+
+    color: #697873;
+
+}
+
+
+
+/* ================= RESULT CARD ================= */
+
+.result-card {
+
+    padding: 28px;
+
+    margin-top: 20px;
+
+    background: white;
+
+    border:
+        1px solid #e2e8e5;
+
+    border-radius: 14px;
+
+}
+
+
+.result-card h3 {
+
+    margin-bottom: 20px;
+
+}
+
+
+
+/* ================= NUCLEOTIDES ================= */
+
+.nucleotides {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+}
+
+
+.nucleotides div {
+
+    text-align: center;
+
+    padding: 20px;
+
+    background: #f2f7f5;
+
+    border-radius: 10px;
+
+}
+
+
+.nucleotides span {
+
+    display: block;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #16745b;
+
+}
+
+
+.nucleotides strong {
+
+    font-size: 28px;
+
+}
+
+
+
+/* ================= SEQUENCE ================= */
+
+.sequence-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
+
+}
+
+
+.sequence-box {
+
+    display: flex;
+
+    gap: 10px;
+
+    align-items: center;
+
+    background: #f2f7f5;
+
+    padding: 15px;
+
+    border-radius: 9px;
+
+}
+
+
+.sequence-box code {
+
+    flex: 1;
+
+    overflow-wrap: anywhere;
+
+    font-family: monospace;
+
+}
+
+
+.copy-button {
+
+    padding:
+        8px 12px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #16745b;
+
+    color: white;
+
+    cursor: pointer;
+
+}
+
+
+.copy-button:hover {
+
+    background: #105a46;
+
+}
+
+
+
+/* ================= PERCENTAGES ================= */
+
+.percentage {
+
+    display: grid;
+
+    grid-template-columns:
+        30px 1fr 60px;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.percentage > span {
+
+    font-weight: bold;
+
+}
+
+
+.progress {
+
+    height: 10px;
+
+    background: #e7ecea;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.progress div {
+
+    height: 100%;
+
+    width: 0%;
+
+    background: #16745b;
+
+    border-radius: 20px;
+
+    transition:
+        width 0.6s ease;
+
+}
+
+
+
+/* ================= ABOUT ================= */
+
+.about {
+
+    padding: 100px 7%;
+
+    background: #17211f;
+
+    color: white;
+
+}
+
+
+.about h2 {
+
+    max-width: 700px;
+
+    font-size: 42px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.about p:not(.tag) {
+
+    max-width: 750px;
+
+    color: #c5d0cc;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+/* ================= FOOTER ================= */
+
+footer {
+
+    padding: 30px 7%;
+
+    background: #111917;
+
+    color: #8f9b97;
+
+    display: flex;
+
+    justify-content: space-between;
+
+}
+
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+
+    header {
+
+        padding: 0 5%;
+
+    }
+
+
+    nav {
+
+        display: none;
+
+    }
+
+
+    .hero {
+
+        padding:
+            70px 5%;
+
+    }
+
+
+    .analyzer-section {
+
+        padding:
+            70px 5%;
+
+    }
+
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .nucleotides {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .sequence-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    footer {
+
+        flex-direction: column;
+
+        gap: 10px;
+
+    }
+
+}

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DNA Sequence Analyzer</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="logo">
+
+        🧬 DNA Analyzer
+
+    </div>
+
+
+    <nav>
+
+        <a href="#analyzer">
+            Analyzer
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <p class="tag">
+            BIOINFORMATICS TOOL
+        </p>
+
+
+        <h1>
+
+            DNA Sequence
+
+            <span>Analyzer</span>
+
+        </h1>
+
+
+        <p class="description">
+
+            Analyze DNA sequences using Python
+            and bioinformatics algorithms.
+
+            Calculate nucleotide composition,
+            GC content, reverse complement
+            and transcription.
+
+        </p>
+
+
+        <a
+            href="#analyzer"
+            class="start-button">
+
+            Start Analysis →
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ANALYZER ================= -->
+
+<section
+    id="analyzer"
+    class="analyzer-section">
+
+
+    <div class="section-title">
+
+        <p class="tag">
+            SEQUENCE ANALYSIS
+        </p>
+
+
+        <h2>
+            Enter your DNA sequence
+        </h2>
+
+
+        <p>
+
+            Enter a DNA sequence containing
+            A, T, G and C.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- INPUT CARD -->
+
+    <div class="input-card">
+
+
+        <label for="sequence">
+
+            DNA Sequence
+
+        </label>
+
+
+        <textarea
+            id="sequence"
+            placeholder="Example: ATGCGTACCGATGCTAGC">
+        </textarea>
+
+
+        <div class="example">
+
+            Example:
+
+            <button
+                id="exampleButton">
+
+                ATGCGTACCGATGCTAGC
+
+            </button>
+
+        </div>
+
+
+        <button
+            id="analyzeButton"
+            class="analyze-button">
+
+            <span id="buttonText">
+
+                Analyze DNA
+
+            </span>
+
+            <span
+                id="loading"
+                class="hidden">
+
+                Analyzing...
+
+            </span>
+
+        </button>
+
+
+        <p
+            id="errorMessage"
+            class="error">
+        </p>
+
+
+    </div>
+
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <div
+        id="results"
+        class="results hidden">
+
+
+        <div class="results-title">
+
+            <p class="tag">
+
+                ANALYSIS COMPLETE
+
+            </p>
+
+
+            <h2>
+
+                Sequence Results
+
+            </h2>
+
+        </div>
+
+
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    📏
+                </div>
+
+                <p>
+                    Sequence Length
+                </p>
+
+                <h3>
+
+                    <span id="length">
+                        0
+                    </span>
+
+                    <small>
+                        bp
+                    </small>
+
+                </h3>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    🧬
+                </div>
+
+                <p>
+                    GC Content
+                </p>
+
+                <h3>
+
+                    <span id="gcContent">
+                        0
+                    </span>%
+
+                </h3>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    🔬
+                </div>
+
+                <p>
+                    AT Content
+                </p>
+
+                <h3>
+
+                    <span id="atContent">
+                        0
+                    </span>%
+
+                </h3>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- NUCLEOTIDE COUNT -->
+
+        <div class="result-card">
+
+            <h3>
+
+                Nucleotide Composition
+
+            </h3>
+
+
+            <div class="nucleotides">
+
+
+                <div>
+
+                    <span>A</span>
+
+                    <strong id="countA">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>T</span>
+
+                    <strong id="countT">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>G</span>
+
+                    <strong id="countG">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>C</span>
+
+                    <strong id="countC">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SEQUENCES -->
+
+        <div class="sequence-grid">
+
+
+            <div class="result-card">
+
+                <h3>
+
+                    Reverse Complement
+
+                </h3>
+
+
+                <div class="sequence-box">
+
+                    <code id="reverseComplement">
+                    </code>
+
+
+                    <button
+                        class="copy-button"
+                        data-target="reverseComplement">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="result-card">
+
+                <h3>
+
+                    RNA Sequence
+
+                </h3>
+
+
+                <div class="sequence-box">
+
+                    <code id="rnaSequence">
+                    </code>
+
+
+                    <button
+                        class="copy-button"
+                        data-target="rnaSequence">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- PERCENTAGES -->
+
+        <div class="result-card">
+
+            <h3>
+
+                Nucleotide Percentages
+
+            </h3>
+
+
+            <!-- A -->
+
+            <div class="percentage">
+
+                <span>A</span>
+
+                <div class="progress">
+
+                    <div id="barA">
+                    </div>
+
+                </div>
+
+                <strong>
+
+                    <span id="percentA">
+                        0
+                    </span>%
+
+                </strong>
+
+            </div>
+
+
+            <!-- T -->
+
+            <div class="percentage">
+
+                <span>T</span>
+
+                <div class="progress">
+
+                    <div id="barT">
+                    </div>
+
+                </div>
+
+                <strong>
+
+                    <span id="percentT">
+                        0
+                    </span>%
+
+                </strong>
+
+            </div>
+
+
+            <!-- G -->
+
+            <div class="percentage">
+
+                <span>G</span>
+
+                <div class="progress">
+
+                    <div id="barG">
+                    </div>
+
+                </div>
+
+                <strong>
+
+                    <span id="percentG">
+                        0
+                    </span>%
+
+                </strong>
+
+            </div>
+
+
+            <!-- C -->
+
+            <div class="percentage">
+
+                <span>C</span>
+
+                <div class="progress">
+
+                    <div id="barC">
+                    </div>
+
+                </div>
+
+                <strong>
+
+                    <span id="percentC">
+                        0
+                    </span>%
+
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ABOUT ================= -->
+
+<section
+    id="about"
+    class="about">
+
+
+    <p class="tag">
+
+        ABOUT THE PROJECT
+
+    </p>
+
+
+    <h2>
+
+        A simple introduction
+        to bioinformatics
+
+    </h2>
+
+
+    <p>
+
+        DNA Sequence Analyzer is a
+        beginner-friendly bioinformatics
+        application built using Python,
+        Flask, HTML, CSS and JavaScript.
+
+    </p>
+
+
+    <p>
+
+        The project demonstrates how
+        programming and biotechnology
+        can be combined to analyze
+        biological sequence data.
+
+    </p>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+
+        DNA Sequence Analyzer © 2026
+
+    </p>
+
+
+    <p>
+
+        Built with Python + Flask
+
+    </p>
+
+</footer>
+
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
